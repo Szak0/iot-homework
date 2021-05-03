@@ -30,3 +30,16 @@ ACCOUNTING_NUMBERS = {
          '| |'+
          '|_|'
 }
+
+
+def get_data(filename='printer_output.txt'):
+    with open(filename, 'r') as data:
+        return data.read()
+
+
+def main():
+    pass
+
+
+if __name__ == '__main__':
+    main()
