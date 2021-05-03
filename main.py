@@ -37,6 +37,12 @@ def get_data(filename='printer_output.txt'):
         return data.read()
 
 
+def get_match(joined_actual_rows):
+    unknown = '?'
+    value = REVERSED_DB.get(joined_actual_rows, unknown)
+    return value
+
+
 def collect_account_numbers(max_digit = 9):
     entries = get_data().split('\n\n')
     output = []
