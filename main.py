@@ -46,7 +46,42 @@ def get_match(joined_actual_rows):
     return value
 
 
-def collect_account_numbers(max_digit = 9):
+def save_to_file(entries):
+    with open('outfile.txt', 'w') as outfile:
+        for entry in entries:
+            outfile.write(entry + '\n')
+        outfile.close()
+
+
+def get_validate(entries):
+    validated = []
+    illegible_items = []
+    for entry in entries:
+        
+        if "?" in entry:
+            illegible = True
+        else:
+            illegible = False
+            valid = True
+            sum = 0
+            for i in range(1, len(entry)+1):
+                multi = 10 - i
+                num = entry[i - 1]
+                sum += multi * int(num)
+                valid = sum % 11 == 0
+                
+        if illegible:
+            illegible_items.append(entry)
+            entry = f'%s %s' % (entry, ' ILL')
+        elif not valid:
+            illegible_items.append(entry)
+            entry = f'%s %s' % (entry, ' ERR')
+
+        validated.append(entry)
+    return validated
+
+
+def collect_account_numbers(max_digit):
     entries = get_data().split('\n\n')
     output = []
     
@@ -65,20 +100,24 @@ def collect_account_numbers(max_digit = 9):
                     
             joined_actual_rows = ''.join(actual_rows)
             value = get_match(joined_actual_rows)
-
+            
             start += 3
             end += 3
             number += value
 
         start, end = 0, 3
-        output.append(number)
+        output.append((number, entries))
         number = ''
+    print(output)
     return output
 
 
 def main():
-    account_numbers = collect_account_numbers()
-    print(account_numbers)
+    max_digit = 9
+    account_numbers = collect_account_numbers(max_digit)
+    ##validated = get_validate(account_numbers)
+    ##save_to_file(validated)
+    ##print(validated)
 
 
 if __name__ == '__main__':
