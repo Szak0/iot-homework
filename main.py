@@ -32,6 +32,9 @@ ACCOUNTING_NUMBERS = {
 }
 
 
+REVERSED_DB = {v: k for k, v in ACCOUNTING_NUMBERS.items()}
+
+
 def get_data(filename='printer_output.txt'):
     with open(filename, 'r') as data:
         return data.read()
