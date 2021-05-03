@@ -37,8 +37,39 @@ def get_data(filename='printer_output.txt'):
         return data.read()
 
 
+def collect_account_numbers(max_digit = 9):
+    entries = get_data().split('\n\n')
+    output = []
+    
+    for entry in entries:
+        print(entry)
+        start = 0
+        end = 3
+        number = ''
+        joined_actual_rows = ''
+        for i in range(max_digit):
+            actual_rows = []
+            for row in entry.split('\n'):
+                if len(row) > 0:
+                    current_slice = ''.join(row[start:end])
+                    actual_rows.append(current_slice)
+                    
+            joined_actual_rows = ''.join(actual_rows)
+            value = get_match(joined_actual_rows)
+
+            start += 3
+            end += 3
+            number += value
+
+        start, end = 0, 3
+        output.append(number)
+        number = ''
+    return output
+
+
 def main():
-    pass
+    account_numbers = collect_account_numbers()
+    print(account_numbers)
 
 
 if __name__ == '__main__':
