@@ -62,7 +62,7 @@ REVERSED_DB = {v: k for k, v in ACCOUNTING_NUMBERS.items()}
 from itertools import product
 
 
-def get_data(filename='printer_output.txt'):
+def get_data(filename):
     with open(filename, 'r') as data:
         return data.read()
 
@@ -168,12 +168,12 @@ def start_validation(number_strings, nums):
 
 
 
-def collect_account_numbers(max_digit):
-    entries = get_data().split('\n\n')
+def collect_account_numbers(max_digit, entries):
+    entries = entries.split('\n\n')
     output = []
     collection = []
     for entry in entries:
-        collection_inner = []
+        inner = []
         start, end = 0, 3
         number = ''
         for i in range(max_digit):
@@ -185,12 +185,12 @@ def collect_account_numbers(max_digit):
                     actual_rows.append(current_slice)
                     joined_actual_rows = ''.join(actual_rows)
                     current_digits.append(joined_actual_rows)
-            collection_inner.append(joined_actual_rows)
+            inner.append(joined_actual_rows)
             value = get_match(joined_actual_rows)
             start += 3
             end += 3
             number += value
-        collection.append((collection_inner, number))
+        collection.append((inner, number))
         start, end = 0, 3
         output.append(number)
     return collection
@@ -205,10 +205,13 @@ def get_validate(entries):
 
 
 def main():
+    filename = 'printer_output.txt'
     max_digit = 9
-    account_numbers = collect_account_numbers(max_digit)
-    validated = get_validate(entries=account_numbers)
+    entries = get_data(filename)
+    account_numbers = collect_account_numbers(max_digit, entries)
+    validated = get_validate(account_numbers)
     save_to_file(validated)
+
 
 if __name__ == '__main__':
     main()
