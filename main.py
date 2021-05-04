@@ -1,3 +1,5 @@
+from itertools import product
+
 ACCOUNTING_NUMBERS = {
     '1': '   '+
          '  |'+
@@ -59,9 +61,6 @@ ACCOUNTING_NUMBERS = {
 REVERSED_DB = {v: k for k, v in ACCOUNTING_NUMBERS.items()}
 
 
-from itertools import product
-
-
 def get_data(filename):
     with open(filename, 'r') as data:
         return data.read()
@@ -110,7 +109,6 @@ def save_to_file(entries):
 
 
 def start_validation(number_strings, nums):
-    fixed_unvalid = []
     replacements = ['|', '_', ' ', '/', '\\']
     unknown = '?'
     valid = True
@@ -167,7 +165,6 @@ def start_validation(number_strings, nums):
         return nums, 'AMB', valid_combinations
 
 
-
 def collect_account_numbers(max_digit, entries):
     entries = entries.split('\n\n')
     output = []
@@ -191,7 +188,6 @@ def collect_account_numbers(max_digit, entries):
             end += 3
             number += value
         collection.append((inner, number))
-        start, end = 0, 3
         output.append(number)
     return collection
 
