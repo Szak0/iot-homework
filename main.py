@@ -99,11 +99,11 @@ def save_to_file(entries):
             sign = entry[1]
             if len(entry) > 2:
                 text = f'{original} {sign} {str(entry[2])}'
-                out += text
+                out += text + '\n'
                 print(text)
             else:
                 text = f'{original} {sign}'
-                out += text
+                out += text + '\n'
                 print(text)
         outfile.write(out)
         outfile.close()
