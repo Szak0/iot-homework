@@ -111,7 +111,7 @@ def save_to_file(entries):
 
 def start_validation(number_strings, nums):
     fixed_unvalid = []
-    replacements = ['|', '_', ' ']
+    replacements = ['|', '_', ' ', '/', '\\']
     unknown = '?'
     valid = True
     illegal = False
@@ -174,10 +174,8 @@ def collect_account_numbers(max_digit):
     collection = []
     for entry in entries:
         collection_inner = []
-        start = 0
-        end = 3
+        start, end = 0, 3
         number = ''
-        joined_actual_rows = ''
         for i in range(max_digit):
             current_digits = []
             actual_rows = []
@@ -187,18 +185,14 @@ def collect_account_numbers(max_digit):
                     actual_rows.append(current_slice)
                     joined_actual_rows = ''.join(actual_rows)
                     current_digits.append(joined_actual_rows)
-            
             collection_inner.append(joined_actual_rows)
             value = get_match(joined_actual_rows)
             start += 3
             end += 3
             number += value
         collection.append((collection_inner, number))
-        
         start, end = 0, 3
         output.append(number)
-        number = ''
-    #print(collection)
     return collection
 
 
@@ -206,16 +200,15 @@ def get_validate(entries):
     validated = []
     for entry in entries:
         entry_num = start_validation(*entry)
-        #print(f"entry: {entry[0]} result: {entry_num}")
         validated.append(entry_num)
-    save_to_file(validated)
+    return validated
 
 
 def main():
     max_digit = 9
     account_numbers = collect_account_numbers(max_digit)
-    get_validate(entries=account_numbers)
-
+    validated = get_validate(entries=account_numbers)
+    save_to_file(validated)
 
 if __name__ == '__main__':
     main()
